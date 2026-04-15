@@ -11,6 +11,7 @@ import Contact from '@/components/sections/Contact';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import FloatingOrbs from '@/components/ui/FloatingOrbs';
 import ScrollToTop from '@/components/ui/ScrollToTop';
+import ScrollProgress from '@/components/ui/ScrollProgress';
 
 function App() {
   useEffect(() => {
@@ -40,6 +41,7 @@ function App() {
         <Footer />
       </div>
       <ScrollToTop />
+      <ScrollProgress />
     </div>
   );
 }

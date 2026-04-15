@@ -7,9 +7,28 @@ import { personalInfo, navLinks, socialLinks } from '@/data/content';
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState('hero');
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+      
+      // Find active section
+      const sections = navLinks.map(link => link.href);
+      sections.unshift('hero');
+      
+      for (const section of sections.reverse()) {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          if (rect.top <= 150) {
+            setActiveSection(section);
+            break;
+          }
+        }
+      }
+    };
+    
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -33,7 +52,12 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
               <button key={link.name} onClick={() => handleNavClick(link.href)}
-                className="transition-colors text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white">
+                className={cn(
+                  "transition-colors text-sm font-medium",
+                  activeSection === link.href
+                    ? "text-primary-400"
+                    : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white"
+                )}>
                 {link.name}
               </button>
             ))}
@@ -67,7 +91,12 @@ export default function Navbar() {
             <div className="container-custom py-4 flex flex-col gap-4">
               {navLinks.map((link) => (
                 <button key={link.name} onClick={() => handleNavClick(link.href)}
-                  className="py-2 text-left font-medium text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white">
+                  className={cn(
+                    "py-2 text-left font-medium",
+                    activeSection === link.href
+                      ? "text-primary-400"
+                      : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white"
+                  )}>
                   {link.name}
                 </button>
               ))}
